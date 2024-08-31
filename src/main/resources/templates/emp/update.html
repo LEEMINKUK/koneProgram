@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>직원 정보 수정</title>
+    <link rel="stylesheet" href="/styles/mainStyle.css">
+    <link rel="stylesheet" href="/styles/headerStyle.css">
+    <link rel="stylesheet" href="/styles/navbarStyle.css">
+    <link rel="stylesheet" href="/styles/myStyle.css">
+    <link rel="stylesheet" href="/styles/footerStyle.css">
+    <link rel="stylesheet" href="/emp/styles/empMainStyle.css">
+    <link rel="stylesheet" href="/emp/styles/empPageStyle.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="shortcut icon" href="#">
+</head>
+<body>
+    <div class="container">
+        <div class="app-area">
+            <!--Heade Start-->
+            <div th:include="common/header"></div>
+            <!--Header End-->
+
+            <!--Main Start-->
+            <div class="main-container">
+                <!--Navbar Start-->
+                <div th:include="common/navbar"></div>
+                <!--Navbar End-->
+                <!--개인 작업 시작-->
+                <div class="my-style">
+                    <div class="outerDiv">
+                        <div class="mainBox">
+                            <div>
+                                <img class="back" src="/emp/images/icon-back.png" onClick="location.href='/emp/detail'"/>
+                                <div class="main">
+                                    <span class="titleText">직원 정보 수정</span>
+                                </div>
+                                <div sec:authorize="hasAnyAuthority('ADMIN')">
+                                    <div class="searchBox">
+                                        <form action="/emp/result" method="get">
+                                            <input type="search" name="search" placeholder="검색 내용" style="width: 150px; height: 30px; border-radius: 7.5px; font-weight: bold; margin-right: 5px">
+                                            <select name="category" style="width: 80px; height: 30px; border-radius: 7.5px; font-weight: bold; margin-right: 5px">
+                                                <option value="name">강사명</option>
+                                            </select>
+                                            <button type="submit" style="width: 80px; height: 30px; border-radius: 7.5px; font-weight: bold">검색</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr class="line" style="width: 700px">
+                            </div>
+                            <div th:object="${ emp }">
+                                <form action="/emp/detail" method="post" enctype="multipart/form-data" onsubmit="return isValid()">
+                                    <div class="userInfoBox">
+                                        <div class="previewBox">
+                                            <img id="preview" th:src="|/imageFile/${ emp.pic }|"><br>
+                                            <div class="fileBox">
+                                                <label for="picFile">사진변경</label>
+                                                <input type="file" id="picFile" name="picFile" onchange="chooseImage(this)"/><br>
+                                                <input id="urlAddress" name="urlAddress" hidden="hidden">
+                                            </div>
+                                        </div>
+                                        <div style="float: left">
+                                            <div>
+                                                <div style="float: left">
+                                                    <div class="spanTagBoxWOSup" style="padding-left: 11.75px; width: 120px">
+                                                        <span>아이디</span><br>
+                                                        <span>비밀번호</span><br>
+                                                        <span>비밀번호 재입력</span><br>
+                                                        <span id="pwdCheckResult">비밀번호 확인</span>
+                                                    </div>
+                                                    <div style="margin-right: 20px; float: left; width: 127px">
+                                                        <div class="spanTagBoxWOSup">
+                                                            <span th:text="*{ id }"></span>
+                                                            <input class="hiddenInputBox" name="id" th:value="*{ id }">
+                                                        </div>
+                                                        <div>
+                                                            <input type="password" name="pwd" id="pwd" onchange="pwdChanged(this)"><br>
+                                                            <input type="password" id="confirm"><br>
+                                                            <button type="button" id="button-confirm" class="pwdCheckFalse" autofocus onclick="pwdCheck()">비밀번호 확인</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="float: left">
+                                                    <div style="float: left; width: 120px">
+                                                        <div class="spanTagBoxWOSup" style="padding-left: 8.13px">
+                                                            <span>이름</span><br>
+                                                            <span>전화번호</span><br>
+                                                            <span>생년월일</span><br>
+                                                            <span>성별</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="spanTagBoxWOSup">
+                                                        <input type="text" id="name" name="name" th:placeholder="*{ name }"><br>
+                                                        <input type="text" id="phone" name="phone" th:placeholder="*{ phone }"><br>
+                                                        <input type="date" id="birth" name="birth"><br>
+                                                        <select name="gender">
+                                                            <option id="male" value="남">남</option>
+                                                            <option id="female" value="여">여</option>
+                                                        </select><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="clear: left">
+                                                <div class="spanTagBoxWOSup" style="width: 120px; padding-left: 11.75px">
+                                                    <span>주소</span>
+                                                    <button type="button" onclick="sample4_execDaumPostcode()" style="width: 60px; margin-left: 10px">찾기</button><br>
+                                                </div>
+                                                <div style="float: left">
+                                                    <input type="text" id="sample4_roadAddress" placeholder="도로명주소" name="address1" style="width: 253px; margin-right: 10px">
+                                                    <input type="text" id="sample4_detailAddress" placeholder="상세주소" name="address2" style="width: 120px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="detailBox">
+                                        <div style="float: left; margin-left: 50px; margin-right: 35px">
+                                            <div>
+                                                <h4>신체조건</h4>
+                                                <div class="spanTagBoxWOSup" style="width: 30px">
+                                                    <span>키</span><br>
+                                                    <span>체중</span><br>
+                                                    <span>BMI</span><br>
+                                                    <span>기타</span>
+                                                </div>
+                                                <div style="float: left; margin-right: 20px; width: 120px">
+                                                    <input type="text" id="height" name="height" th:placeholder="*{ physicalDTO.height }" onchange="bmiCal()" style="width: 60px">
+                                                    <span style="font-weight: bold">cm</span><br>
+                                                    <input type="text" id="weight" name="weight" th:placeholder="*{ physicalDTO.weight }" onchange="bmiCal()" style="width: 60px">
+                                                    <span style="font-weight: bold">kg</span><br>
+                                                    <input type="text" id="bmi" name="bmi" th:placeholder="*{ physicalDTO.bmi }" style="width: 60px">
+                                                    <span style="font-weight: bold">kg/m<sup>2</sup></span><br>
+                                                    <input type="text" name="etc" th:placeholder="*{ etc }">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="float: left; margin-right: 40px">
+                                            <h4>자격 사항</h4>
+                                            <div style="margin-right: 20px; float: left">
+                                                <input type="checkbox" id="qual1" name="qual" value="생활체육지도자" style="width: 25px; height: 25px"><br>
+                                                <input type="checkbox" id="qual2" name="qual" value="건강운동관리사" style="width: 25px; height: 25px"><br>
+                                                <input type="checkbox" id="qual3" name="qual" value="운동사" style="width: 25px; height: 25px"><br>
+                                            </div>
+                                            <div class="spanTagBoxWOSup">
+                                                <label for="qual1">생활체육지도자</label><br>
+                                                <label for="qual2">건강운동관리사</label><br>
+                                                <label for="qual3">운동사(사설)</label><br>
+                                                <input type="text" id="qualWrite" name="qualWrite" placeholder="추가: 직접 입력"><br>
+                                                <input type="hidden" id="qualEtc" name="qualEtc"></input>
+                                            </div>
+                                        </div>
+                                        <div style="float: left">
+                                            <h4>경력 사항</h4>
+                                            <div class="spanTagBoxWOSup" style="width: 75px">
+                                                <span>근무지</span><br>
+                                                <span>기간</span><br>
+                                                <span>전체 경력</span><br>
+                                                <span>기본급</span>
+                                            </div>
+                                            <div style="float: left; font-weight: bold">
+                                                <input type="text" name="location" th:placeholder="*{ employeeDTO.location }"><br>
+                                                <input type="text" name="year" style="width: 30px" th:placeholder="*{ employeeDTO.year }">년 <input type="text" name="month" style="width: 30px" th:placeholder="*{ employeeDTO.month }">개월 <br>
+                                                <input type="text" name="totalYear" style="width: 30px" th:placeholder="*{ employeeDTO.totalYear }">년 <input type="text" name="totalMonth" style="width: 30px" th:placeholder="*{ employeeDTO.totalMonth }">개월 <br>
+                                                <div sec:authorize="hasAnyAuthority('USER')">
+                                                    <div class="spanTagBoxWOSup">
+                                                        <span th:text="*{ employeeDTO.salary }"></span>
+                                                        <input class="hiddenInputBox" name="salary" th:value="*{ employeeDTO.salary }">
+                                                    </div>
+                                                </div>
+                                                <div sec:authorize="hasAnyAuthority('ADMIN')">
+                                                    <input type="text" name="salary" id="salary" th:placeholder="*{ employeeDTO.salary }" autofocus> <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="clear: left; margin-left: 50px; padding-top: 30px">
+                                            <button class="submitButton" type="submit" id="submit" name="submit" style="float: right; margin-right: 300px">수정</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="sideBox">
+                            <div sec:authorize="hasAnyAuthority('USER')">
+                                <div class="scheduleBox">
+                                    <span class="topic" id="today1"></span>
+                                    <span class="date" id="today2"></span>
+                                    <span class="moreSche" onclick="location.href='/schedule/schedulemain'">더보기</span><br>
+                                    <table class="cal">
+                                        <tr>
+                                            <th class="none">일</th>
+                                            <th class="none">월</th>
+                                            <th class="none">화</th>
+                                            <th class="none">수</th>
+                                            <th class="none">목</th>
+                                            <th class="none">금</th>
+                                            <th class="none">토</th>
+                                        </tr>
+                                        <tr>
+                                            <td id="sun" class="none"></td>
+                                            <td id="mon" class="none"></td>
+                                            <td id="tue" class="none"></td>
+                                            <td id="wed" class="none"></td>
+                                            <td id="thu" class="none"></td>
+                                            <td id="fri" class="none"></td>
+                                            <td id="sat" class="none"></td>
+                                        </tr>
+                                    </table>
+                                    <hr class="line2">
+                                    <div class="scheBox" style="font-size: 14px">
+                                        <div class="timeLine">
+                                            <div class="pointer" id="pointer1"></div>
+                                            <hr class="verticalLine">
+                                            <div class="pointer" id="pointer2"></div>
+                                            <hr class="verticalLine">
+                                            <div class="pointer" id="pointer3"></div>
+                                            <hr class="verticalLine">
+                                            <div class="pointer" id="pointer4"></div>
+                                            <hr class="verticalLine">
+                                            <div class="pointer" id="pointer5"></div>
+                                            <hr class="verticalLine">
+                                            <div class="pointer" id="pointer6"></div>
+                                        </div>
+                                        <span id="time1">8:00 am</span><br>
+                                        <div class="scheList" id="scheList1">
+                                            <div th:each="sche : ${ scheList1 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+                                            </div>
+                                        </div>
+                                        <span id="time2">10:00 am</span><br>
+                                        <div class="scheList" id="scheList2">
+                                            <div th:each="sche : ${ scheList2 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+                                            </div>
+                                        </div>
+                                        <span id="time3">12:00 pm</span><br>
+                                        <div class="scheList" id="scheList3">
+                                            <div th:each="sche : ${ scheList3 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+                                            </div>
+                                        </div>
+                                        <span id="time4">14:00 pm</span><br>
+                                        <div class="scheList" id="scheList4">
+                                            <div th:each="sche : ${ scheList4 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+
+                                            </div>
+                                        </div>
+                                        <span id="time5">16:00 pm</span><br>
+                                        <div class="scheList" id="scheList5">
+                                            <div th:each="sche : ${ scheList5 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+                                            </div>
+                                        </div>
+                                        <span id="time6">18:00 pm</span><br>
+                                        <!--                <div class="scheList" style="height: 164px; margin-left: 20px">-->
+                                        <div class="scheList" id="scheList6" style="height: 120px; margin-left: 20px">
+                                            <div th:each="sche : ${ scheList6 }">
+                                                <span th:text="|${ sche.empDTO.name }님 ${ sche.classDTO.name } 일정 (${ sche.start })|"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div sec:authorize="hasAnyAuthority('ADMIN')">
+                                <div>
+                                    <div class="main" style="margin-bottom: 25px">
+                                        <span class="titleText" style="margin-left: 30px">직원 리스트</span>
+                                    </div>
+                                    <hr class="line" style="width: 300px">
+                                </div>
+                                <div class="sideEmpList">
+                                    <div class="sideList">
+                                        <div class="sideEmpBlock" th:each="emp : ${ empList }" th:onClick="|location.href='/emp/detail/' + ${ emp.code }|">
+                                            <div class="empBlockLeft">
+                                                <img class="empImg" th:src="|/imageFile/${ emp.pic }|">
+                                            </div>
+                                            <div class="empBlockRight">
+                                                <p class="empName" th:text="${ emp.name }"></p>
+                                                <p class="empRole" th:text="${ emp.role == 'ADMIN'? '대표' : '직원' }"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--개인 작업 종료-->
+            </div>
+            <!--Main End-->
+
+            <!--Footer Start-->
+            <div th:include="common/footer"></div>
+            <!--Footer End-->
+        </div>
+    </div>
+
+    <script>
+        var d = new Date();
+        var a = new Date();
+
+        let day = document.getElementById("today1");
+        let date = document.getElementById("today2");
+        let sun = document.getElementById("sun");
+        let mon = document.getElementById("mon");
+        let tue = document.getElementById("tue");
+        let wed = document.getElementById("wed");
+        let thu = document.getElementById("thu");
+        let fri = document.getElementById("fri");
+        let sat = document.getElementById("sat");
+
+        switch (d.getDay()) {
+            case 0: day.innerHTML = '오늘, 일요일';
+                sun.className = "today";
+                a.setDate(d.getDate());
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 2);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 3);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 4);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 5)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 6)
+                sat.innerHTML = a.getDate();
+                break;
+            case 1: day.innerHTML = '오늘, 월요일';
+                mon.className = "today";
+                a.setDate(d.getDate() - 1);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate());
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 2);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 3);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 4)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 5)
+                sat.innerHTML = a.getDate();
+                break;
+            case 2: day.innerHTML = '오늘, 화요일';
+                tue.className = "today";
+                a.setDate(d.getDate() - 2);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 1);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate());
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 2);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 3)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 4)
+                sat.innerHTML = a.getDate();
+                break;
+            case 3: day.innerHTML = '오늘, 수요일';
+                wed.className = "today";
+                a.setDate(d.getDate() - 3);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 2);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 1);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate());
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 2)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 3)
+                sat.innerHTML = a.getDate();
+                break;
+            case 4: day.innerHTML = '오늘, 목요일';
+                thu.className = "today";
+                a.setDate(d.getDate() - 4);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 3);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 2);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 1);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate());
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 2)
+                sat.innerHTML = a.getDate();
+                break;
+            case 5: day.innerHTML = '오늘, 금요일';
+                fri.className = "today";
+                a.setDate(d.getDate() - 5);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 4);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 3);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 2);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 1);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate())
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate() + 1)
+                sat.innerHTML = a.getDate();
+                break;
+            case 6: day.innerHTML = '오늘, 토요일';
+                sat.className = "today";
+                a.setDate(d.getDate() - 6);
+                sun.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 5);
+                mon.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 4);
+                tue.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 3);
+                wed.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 2);
+                thu.innerHTML = a.getDate();
+                a.setDate(d.getDate() - 1)
+                fri.innerHTML = a.getDate();
+                a.setDate(d.getDate())
+                sat.innerHTML = a.getDate();
+                break;
+        }
+
+        date.innerHTML = d.getFullYear() + '.' + ((d.getMonth() + 1) < 10? '0' + (d.getMonth() + 1) : (d.getMonth() + 1)) + '.' + (d.getDate() < 10? '0' + d.getDate() : d.getDate());
+
+
+        switch (d.getHours()) {
+            case 8 : case 9: document.getElementById("pointer1").className = "pointerTime";
+                document.getElementById("time1").className = "scheTime";
+                document.getElementById("scheList1").className = "scheList scheListTime"; break;
+            case 10 : case 11: document.getElementById("pointer2").className = "pointerTime";
+                document.getElementById("time2").className = "scheTime";
+                document.getElementById("scheList2").className = "scheList scheListTime"; break;
+            case 12 : case 13: document.getElementById("pointer3").className = "pointerTime";
+                document.getElementById("time3").className = "scheTime";
+                document.getElementById("scheList3").className = "scheList scheListTime"; break;
+            case 14 : case 15: document.getElementById("pointer4").className = "pointerTime";
+                document.getElementById("time4").className = "scheTime";
+                document.getElementById("scheList4").className = "scheList scheListTime"; break;
+            case 16 : case 17: document.getElementById("pointer5").className = "pointerTime";
+                document.getElementById("time5").className = "scheTime";
+                document.getElementById("scheList5").className = "scheList scheListTime"; break;
+            default: document.getElementById("pointer6").className = "pointerTime";
+                document.getElementById("time6").className = "scheTime";
+                document.getElementById("scheList6").className = "scheList scheListTime"; break;
+        }
+    </script>
+
+    <script>
+        const pwd = document.getElementById("pwd");
+
+        let pwdChecked = true;
+
+        function chooseImage(obj) {
+            let reader = new FileReader();
+
+            reader.readAsDataURL(obj.files[0]);
+
+            reader.onload = function (e) {
+                // $(`#preview`)[0].src = e.target.result;
+                document.getElementById("preview").src = e.target.result;
+                document.getElementById("urlAddress").value = e.target.result;
+            }
+        }
+
+        function pwdChanged() {
+            if (pwd.value != '') {
+                document.getElementById("confirm").value = '';
+                pwdChecked = false;
+                document.getElementById("button-confirm").className = pwdChecked? 'pwdCheckTrue' : 'pwdCheckFalse';
+                $('#confirm').focus();
+            } else if (pwd.value == '') {
+                pwdChecked = true;
+            }
+        }
+
+        function pwdCheck() {
+            let first = document.getElementById("pwd");
+            let second = document.getElementById("confirm");
+            let check = document.getElementById("pwd").value == document.getElementById("confirm").value? true : false;
+
+            if (first.value == null || first.value == '') {
+                alert("비밀번호를 입력하세요.");
+                pwdChecked = false;
+                document.getElementById("button-confirm").className = pwdChecked? 'pwdCheckTrue' : 'pwdCheckFalse';
+                $('#pwd').focus();
+            } else {
+                if (check) {
+                    alert("비밀번호가 일치합니다.");
+                    pwdChecked = true;
+                    document.getElementById("button-confirm").className = pwdChecked? 'pwdCheckTrue' : 'pwdCheckFalse';
+                    $('#name').focus();
+                } else {
+                    alert("비밀번호가 일치하지 않습니다.")
+                    first.value = '';
+                    second.value = '';
+                    pwdChecked = false;
+                    document.getElementById("button-confirm").className = pwdChecked? 'pwdCheckTrue' : 'pwdCheckFalse';
+                    $('#pwd').focus();
+                }
+            }
+        }
+
+        function isValid() {
+
+            if (!pwdChecked) {
+                alert('비밀번호가 입력되어있습니다.');
+            }
+
+            return pwdChecked;
+        }
+    </script>
+
+    <script>
+        function sample4_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var roadAddr = data.roadAddress; // 도로명 주소 변수
+                    var extraRoadAddr = ''; // 참고 항목 변수
+
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraRoadAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraRoadAddr !== ''){
+                        extraRoadAddr = ' (' + extraRoadAddr + ')';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("sample4_roadAddress").value = roadAddr;
+
+                    var guideTextBox = document.getElementById("guide");
+                    // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                    if(data.autoRoadAddress) {
+                        var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                        guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                        guideTextBox.style.display = 'block';
+
+                    } else if(data.autoJibunAddress) {
+                        var expJibunAddr = data.autoJibunAddress;
+                        // guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                        // guideTextBox.style.display = 'block';
+                    } else {
+                        // guideTextBox.innerHTML = '';
+                        // guideTextBox.style.display = 'none';
+                    }
+                }
+            }).open();
+        }
+    </script>
+
+    <script th:inline="javascript">
+        var genderObject = [[${emp.gender}]];
+        var birthObject = [[${emp.birth}]];
+        var heightObject = [[${emp.physicalDTO.height}]];
+        var weightObject = [[${emp.physicalDTO.weight}]];
+        var bmiObject = [[${emp.physicalDTO.bmi}]];
+        var qualObject = [[${quals}]];
+
+        var female = document.getElementById("female");
+        var birth = document.getElementById("birth");
+        var height = document.getElementById("height");
+        var weight = document.getElementById("weight");
+        var bmi = document.getElementById("bmi");
+        var qualEtc = '';
+
+        birth.defaultValue = birthObject;
+
+        genderObject == '여'? female.defaultSelected = true: female.defaultSelected = false;
+
+        qualObject.indexOf('생활체육지도자') >= 0? document.getElementById("qual1").defaultChecked = true : null;
+        qualObject.indexOf('건강운동관리사') >= 0? document.getElementById("qual2").defaultChecked = true : null;
+        qualObject.indexOf('운동사') >= 0? document.getElementById("qual3").defaultChecked = true : null;
+
+        for (i = 0; i < qualObject.length; i++) {
+            if (qualObject[i] != '생활체육지도자' && qualObject[i] != '건강운동관리사' && qualObject[i] != '운동사') {
+                qualEtc = qualObject[i];
+                document.getElementById("qualWrite").placeholder = '수정: ' + qualEtc + ' 외 입력';
+                document.getElementById("qualEtc").value = qualEtc;
+            }
+        }
+
+        function bmiCal() {
+            if (weight.value != '' && height.value != '') {
+                let bmiValue = Math.round(Number(weight.value) / (Number(height.value) ** 2) * 1000000) / 100;
+
+                bmi.value = bmiValue;
+            } else if (weight.value != '') {
+                let bmiValue = Math.round(Number(weight.value) / (Number(heightObject) ** 2) * 1000000) / 100;
+
+                bmi.value = bmiValue;
+            } else if (height.value != '') {
+                let bmiValue = Math.round(Number(weightObject) / (Number(height.value) ** 2) * 1000000) / 100;
+
+                bmi.value = bmiValue;
+            } else {
+                bmi.value = '';
+                bmi.placeholder = bmiObject;
+            }
+        }
+    </script>
+</body>
+</html>

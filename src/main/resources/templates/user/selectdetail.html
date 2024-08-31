@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>신규 직원 등록</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" th:href="@{/css/selectDetail.css}">
+    <link rel="stylesheet" th:href="@{/styles/mainStyle.css}">
+    <link rel="stylesheet" th:href="@{/styles/headerStyle.css}">
+    <link rel="stylesheet" th:href="@{/styles/navbarStyle.css}">
+    <link rel="stylesheet" th:href="@{/styles/myStyle.css}">
+    <link rel="stylesheet" th:href="@{/styles/footerStyle.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
+</head>
+<body>
+<div class="container">
+    <div class="app-area">
+        <!--Heade Start-->
+        <div th:include="common/header"></div>
+        <!--Header End-->
+
+        <!--Main Start-->
+        <div class="main-container">
+            <!--Navbar Start-->
+            <div th:include="common/navbar"></div>
+            <!--Navbar End-->
+            <!--개인 작업 시작-->
+            <div class="outerDiv">
+                <div class="mainBox">
+                    <div class="on">
+                        <img class="back" onClick="location.href='/user/selectall'" src="/img/Back.png">
+                        <p class="topic" th:text="${user.userName} + ' 회원님'"></p>
+                    </div>
+                    <hr class="line1">
+                    <div>
+                            <div class="signupBox">
+                                <div class="previewBox">
+                                    <img id="preview" th:src="|/imageFile/${user.userPic}|"><br>
+                                </div>
+                                <div class="infoBox">
+                                    <div>
+                                        <div class="infoBox1">
+                                            <div class="left">
+                                                <span class="inputText">아이디</span><br>
+                                                <span class="inputText">키</span><br>
+                                                <span class="inputText">체중</span><br>
+                                                <span class="inputText">BMI</span>
+                                            </div>
+                                            <div class="right2">
+                                                <p class="userText" th:text="${user.userId}"></p>
+                                                <p class="userText" th:if="${user.physicalDTO.height != null}" style="margin-top: 12px">
+                                                    <span th:text="${user.physicalDTO.height}"></span>
+                                                </p>
+                                                <p class="userText" th:text="${user.physicalDTO.weight}" style="padding-top: 9px"></p>
+                                                <p class="userText" th:text="${user.physicalDTO.bmi}" style="padding-top: 20px"></p>
+                                            </div>
+                                        </div>
+                                        <div class="infoBox2">
+                                            <div class="left">
+                                                <span class="inputText">이름</span><br>
+                                                <span class="inputText">전화번호</span><br>
+                                                <span class="inputText">생년월일</span><br>
+                                                <span class="inputText">성별</span><br>
+                                                <span class="inputText">담당강사</span>
+                                            </div>
+                                            <div class="right2" style="margin-left: 30px">
+                                                <p class="userText" th:text="${user.userName}"></p>
+                                                <p class="userText" th:text="${user.userPhone}" style="margin-top: 10px"></p>
+                                                <p class="userText" th:text="${user.userBirth}" style="margin-top: 10px"></p>
+                                                <p class="userText" th:text="${user.userGender}" style="margin-top: 11px"></p>
+                                                <p class="userText" th:if="${user.userStaff == 0 || user.userStaff == null}" th:text="없음" style="margin-top: 10px"></p>
+                                                <p class="userText" th:if="${user.userStaff}" style="margin-top: 10px">
+                                                    <span th:text="${user.staffName}"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infoBox3">
+                                        <div class="left">
+                                            <div class="leftIn2">
+                                                <span class="inputText">주소</span>
+                                            </div>
+                                        </div>
+                                        <div class="right2" style="margin-left: 30px; padding-top: 7px">
+                                            <div style="display: flex; align-items: center">
+                                                <p class="userText" th:text="${user.userAddress}" style="width: 220px"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detailBox">
+                                <div class="etcAndButton">
+                                    <div class="infoBox4">
+                                        <div class="left">
+                                            <span class="inputText">기타</span>
+                                        </div>
+                                        <p class="etcText" th:text="${user.userEtc}"></p>
+                                    </div>
+                                        <form id="updateForm" action="/user/update" method="get">
+                                                <input type="hidden" name="code" th:value="${user.userCode}">
+                                                <input class="submitButton" type="submit" value="수정">
+                                        </form>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="sideBox">
+                    <div class="painBox">
+                        <form action="/pain/detail" method="get">
+                            <input type="hidden" name="code" th:value="${user.userCode}">
+                            <img src="/images/기본.png" style="width: 300px; height: 500px; margin-top: 20px;">
+                            <input type="submit" class="painText" value="통증등록">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!--개인 작업 종료-->
+        </div>
+        <!--Main End-->
+
+        <!--Footer Start-->
+        <div th:include="common/footer"></div>
+        <!--Footer End-->
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https:/mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.willingtogohome.gymga.user.model.dao.UserMapper">
+
+    <resultMap id="userResultMap" type="com.willingtogohome.gymga.user.model.dto.UserDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userRole" column="user_role"/>
+        <result property="userPic" column="user_pic"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userEtc" column="user_etc"/>
+        <result property="userStaff" column="user_staff"/>
+    </resultMap>
+
+    <resultMap id="userTotResultMap" type="com.willingtogohome.gymga.user.model.dto.UserTotDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userRole" column="user_role"/>
+        <result property="userPic" column="user_pic"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userEtc" column="user_etc"/>
+        <result property="userStaff" column="user_staff"/>
+        <result property="staffName" column="staff_name"/>
+        <association property="physicalDTO" javaType="com.willingtogohome.gymga.user.model.dto.PhysicalDTO">
+            <result property="height" column="PHY_HEIGHT"/>
+            <result property="weight" column="PHY_WEIGHT"/>
+            <result property="bmi" column="PHY_BMI"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="userAndEmpResultMap" type="com.willingtogohome.gymga.user.model.dto.UserAndEmpDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userRole" column="user_role"/>
+        <result property="userPic" column="user_pic"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userEtc" column="user_etc"/>
+        <result property="userStaff" column="user_staff"/>
+        <result property="staffName" column="staff_name"/>
+    </resultMap>
+
+
+    <select id="allUser" resultMap="userAndEmpResultMap">
+        SELECT
+              A.USER_CODE
+            , A.USER_NAME
+            , A.USER_ID
+            , A.USER_GENDER
+            , A.USER_PHONE
+            , A.USER_STAFF
+            , A.USER_ROLE
+            , B.USER_NAME AS STAFF_NAME
+         FROM
+              USERDB A
+         LEFT JOIN
+              USERDB B ON A.USER_STAFF = B.USER_CODE
+        WHERE
+              A.USER_ROLE = 'MEMBER'
+        ORDER BY
+              A.USER_CODE;
+    </select>
+
+    <select id="findLastCode" resultType="_int">
+        SELECT
+                MAX(USER_CODE)
+        FROM USERDB
+    </select>
+
+    <delete id="userPain" parameterType="int">
+        DELETE FROM
+              PAINDB
+        WHERE
+              USER_CODE = #{userCode}
+    </delete>
+
+    <delete id="facilityUser" parameterType="int">
+        DELETE FROM
+              FACILITYDB
+        WHERE
+              USER_CODE = #{userCode}
+    </delete>
+
+    <delete id="physicalUser" parameterType="int">
+        DELETE FROM
+              PHYSICALDB
+        WHERE
+              USER_CODE = #{userCode}
+    </delete>
+
+    <delete id="scheduleUser" parameterType="int">
+        DELETE FROM
+              SCHEDULEDB
+        WHERE
+              MEMBER_CODE = #{userCode}
+    </delete>
+
+    <delete id="validateUser" parameterType="int">
+        DELETE FROM
+              VALIDATEDB
+        WHERE
+              USER_CODE = #{userCode}
+    </delete>
+
+    <delete id="salesUser" parameterType="int">
+        DELETE FROM
+            SALESDB
+        WHERE
+            USER_CODE = #{userCode}
+    </delete>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM
+              USERDB
+        WHERE
+              USER_CODE = #{userCode}
+    </delete>
+
+
+    <select id="searchedUser" resultMap="userAndEmpResultMap">
+        SELECT
+            A.USER_CODE
+            , A.USER_NAME
+            , A.USER_ID
+            , A.USER_GENDER
+            , A.USER_PHONE
+            , A.USER_STAFF
+            , A.USER_ROLE
+            , B.USER_NAME AS STAFF_NAME
+        FROM
+            USERDB A
+        LEFT JOIN
+            USERDB B ON A.USER_STAFF = B.USER_CODE
+        <where>
+            <if test="condition == 'name'">
+                AND A.USER_NAME Like CONCAT('%', #{ text }, '%')
+            </if>
+            <if test="condition == 'id'">
+                AND A.USER_ID Like CONCAT('%', #{ text }, '%')
+            </if>
+            AND A.USER_ROLE = 'MEMBER'
+        </where>
+        ORDER BY
+              A.USER_CODE;
+    </select>
+
+    <select id="findAllTeacher" resultMap="userResultMap">
+        SELECT
+                USER_CODE
+             ,  USER_ID
+             ,  USER_PWD
+             ,  USER_NAME
+             ,  USER_PHONE
+             ,  USER_ROLE
+             ,  USER_PIC
+             ,  USER_GENDER
+             ,  USER_BIRTH
+             ,  USER_ADDRESS
+             ,  USER_ETC
+             ,  USER_STAFF
+         FROM
+              USERDB
+        WHERE
+              USER_ROLE IN ('ADMIN', 'USER')
+        ORDER BY
+              USER_CODE
+    </select>
+
+    <insert id="registUser" parameterType="com.willingtogohome.gymga.user.model.dto.UserDTO">
+        INSERT INTO USERDB(
+                USER_CODE
+             ,  USER_ROLE
+             ,  USER_NAME
+             ,  USER_ID
+             ,  USER_PWD
+             ,  USER_BIRTH
+             ,  USER_GENDER
+             ,  USER_PHONE
+             ,  USER_ADDRESS
+             ,  USER_ETC
+             ,  USER_STAFF
+             ,  USER_PIC
+        )
+        VALUES(
+                #{ userCode }
+              , #{ userRole }
+              , #{ userName }
+              , #{ userId }
+              , #{ userPwd }
+              , #{ userBirth }
+              , #{ userGender }
+              , #{ userPhone }
+              , #{ userAddress }
+              , #{ userEtc }
+              , #{ userStaff }
+              , #{ userPic}
+        )
+    </insert>
+
+    <insert id="registUserPhysical" parameterType="com.willingtogohome.gymga.user.model.dto.PhysicalDTO">
+        INSERT INTO PHYSICALDB(
+                USER_CODE
+                ,  PHY_HEIGHT
+                ,  PHY_WEIGHT
+                ,  PHY_BMI
+
+        )
+        VALUES(
+                #{ userCode }
+                , #{ height }
+                , #{ weight }
+                , #{ bmi }
+        )
+    </insert>
+
+    <select id="selectAllUserID" resultMap="userResultMap">
+        SELECT
+            USER_ID
+        FROM USERDB
+    </select>
+
+    <select id="getUserDetailByCode" resultMap="userTotResultMap">
+        SELECT
+            A.USER_CODE
+            , A.USER_ID
+            , A.USER_PWD
+            , A.USER_NAME
+            , A.USER_PHONE
+            , A.USER_ROLE
+            , A.USER_PIC
+            , A.USER_GENDER
+            , A.USER_BIRTH
+            , A.USER_ADDRESS
+            , A.USER_ETC
+            , A.USER_STAFF
+            , B.PHY_HEIGHT
+            , B.PHY_WEIGHT
+            , B.PHY_BMI
+            , C.USER_NAME AS STAFF_NAME
+        FROM USERDB A
+        LEFT JOIN PHYSICALDB B ON A.USER_CODE = B.USER_CODE
+        LEFT JOIN USERDB C ON A.USER_STAFF = C.USER_CODE
+        WHERE A.USER_CODE = #{ code }
+    </select>
+
+    <select id="updatePage" resultMap="userTotResultMap">
+        SELECT
+            A.USER_CODE
+            , A.USER_ID
+            , A.USER_PWD
+            , A.USER_NAME
+            , A.USER_PHONE
+            , A.USER_ROLE
+            , A.USER_PIC
+            , A.USER_GENDER
+            , A.USER_BIRTH
+            , A.USER_ADDRESS
+            , A.USER_ETC
+            , A.USER_STAFF
+            , B.PHY_HEIGHT
+            , B.PHY_WEIGHT
+            , B.PHY_BMI
+        FROM USERDB A
+        LEFT JOIN PHYSICALDB B ON A.USER_CODE = B.USER_CODE
+        WHERE A.USER_CODE = #{ code }
+    </select>
+
+    <update id="updateUser" parameterType="com.willingtogohome.gymga.user.model.dto.UserDTO">
+        UPDATE USERDB
+        <set>
+            USER_CODE = #{ userCode }
+            <if test="userPwd != ''">
+                , USER_PWD = #{ userPwd }
+            </if>
+            <if test="userName != ''">
+                , USER_NAME = #{ userName }
+            </if>
+            <if test="userPhone != ''">
+                , USER_PHONE = #{ userPhone }
+            </if>
+            <if test="userPic != null">
+                , USER_PIC = #{ userPic }
+            </if>
+            <if test="userGender != ''">
+                , USER_GENDER = #{ userGender }
+            </if>
+            <if test="userBirth != ''">
+                , USER_BIRTH = #{ userBirth }
+            </if>
+            <if test="userAddress != ''">
+                , USER_ADDRESS = #{ userAddress }
+            </if>
+            <if test="userEtc != ''">
+                , USER_ETC = #{ userEtc }
+            </if>
+            <if test="userStaff != ''">
+                , USER_STAFF = #{ userStaff }
+            </if>
+        </set>
+        WHERE USER_CODE = #{ userCode }
+    </update>
+
+    <update id="updatePhy" parameterType="com.willingtogohome.gymga.user.model.dto.PhysicalDTO">
+        UPDATE PHYSICALDB
+        <set>
+            USER_CODE = #{ userCode }
+            <if test="height != ''">
+                , PHY_HEIGHT = #{ height }
+            </if>
+            <if test="weight != ''">
+                , PHY_WEIGHT = #{ weight }
+            </if>
+            <if test="bmi != ''">
+                , PHY_BMI = #{ bmi }
+            </if>
+        </set>
+        WHERE USER_CODE = #{ userCode }
+    </update>
+
+<!--    <update id="update" parameterType="com.willingtogohome.gymga.user.model.dto.UserTotDTO">-->
+<!--        UPDATE USERDB A-->
+<!--        LEFT JOIN PHYSICALDB B ON A.USER_CODE = B.USER_CODE-->
+<!--        <set>-->
+<!--            <if test="userId != ''">-->
+<!--                , A.USER_ID = #{ userId }-->
+<!--            </if>-->
+<!--            <if test="userPwd != ''">-->
+<!--                , A.USER_PWD = #{ userPwd }-->
+<!--            </if>-->
+<!--            <if test="userName != ''">-->
+<!--                , A.USER_NAME = #{ userName }-->
+<!--            </if>-->
+<!--            <if test="userPhone != ''">-->
+<!--                , A.USER_PHONE = #{ userPhone }-->
+<!--            </if>-->
+<!--            <if test="userRole != ''">-->
+<!--                , A.USER_ROLE = #{ userRole }-->
+<!--            </if>-->
+<!--            <if test="userPic != ''">-->
+<!--                , A.USER_PIC = #{ userPic }-->
+<!--            </if>-->
+<!--            <if test="userGender != ''">-->
+<!--                , A.USER_GENDER = #{ userGender }-->
+<!--            </if>-->
+<!--            <if test="userBirth != ''">-->
+<!--                , A.USER_BIRTH = #{ userBirth }-->
+<!--            </if>-->
+<!--            <if test="userAddress != ''">-->
+<!--                , A.USER_ADDRESS = #{ userAddress }-->
+<!--            </if>-->
+<!--            <if test="userEtc != ''">-->
+<!--                , A.USER_ETC = #{ userEtc }-->
+<!--            </if>-->
+<!--            <if test="userStaff != ''">-->
+<!--                , A.USER_STAFF = #{ userStaff }-->
+<!--            </if>-->
+<!--            <if test="physicalDTO.height != ''">-->
+<!--                , B.PHY_HEIGHT = #{ physicalDTO.height }-->
+<!--            </if>-->
+<!--            <if test="physicalDTO.weight != ''">-->
+<!--                , B.PHY_WEIGHT = #{ physicalDTO.weight }-->
+<!--            </if>-->
+<!--            <if test="physicalDTO.bmi != ''">-->
+<!--                , B.PHY_BMI = #{ physicalDTO.bmi }-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE A.USER_CODE = #{ userCode };-->
+<!--    </update>-->
+
+</mapper>

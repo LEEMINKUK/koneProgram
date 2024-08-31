@@ -1,0 +1,86 @@
+.header-container {
+    width: 1365px;
+    min-height: 67px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+}
+
+.header-container .logo {
+    width: 113.5px;
+    display: flex;
+    /* justify-content: space-between; */
+    margin-left: 32px;
+    font-size: 28.5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.header-container .logo .gym {
+    color: #4B82D8;
+}
+.header-container .gym{
+    width: 150px;
+}
+
+.header-container .logo{
+    margin-left: 5px;
+    width: 300px;
+    height: 45px;
+    /*border-radius: 50%;*/
+    /*background-color: #4B82D8;*/
+    text-align: center;
+}
+.header-container .home{
+    margin-left: 5px;
+    width: 100px;
+    height: 40px;
+    font-size: 23px;
+    border-radius: 50%;
+    background-color: #4B82D8;
+    text-align: center;
+}
+
+.header-container .profile {
+    width: 37.5px;
+    height: 37.5px;
+    margin-left: 280px;
+}
+
+.header-container .profile img {
+    width: 37.5px;
+    height: 37.5px;
+    border-radius: 37.5px;
+}
+
+.header-container .welcome {
+    margin-left: 18px;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+
+}
+
+.header-container .welcome p {
+    color: #656565;
+    font-size: 18px;
+}
+
+.header-container .welcome span {
+    color: #000000;
+    font-size: 19.5px;
+    margin: 0 4px 0 4px;
+}
+
+.header-container .icon1 {
+    margin-left: 425px;
+    width: 26.25px;
+    height: 26.25px;
+}
+
+.header-container .icon2 {
+    margin-left: 21px;
+    width: 26.25px;
+    height: 26.25px;
+}

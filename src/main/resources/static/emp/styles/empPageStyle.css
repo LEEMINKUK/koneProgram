@@ -1,0 +1,411 @@
+body {
+    font-family: "Noto Sans KR", sans-serif;
+}
+
+h4 {
+    margin-bottom: 10px;
+}
+
+span {
+    /*color: rgba(171, 171, 171, 1);*/
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+input {
+    /*width: 150px;*/
+    width: 120px;
+    /*height: 30px;*/
+    height: 25px;
+    border: 1px solid rgba(171, 171, 171, 1);
+    border-radius: 5px;
+    /*color: rgba(171, 171, 171, 1);*/
+    font-size: 16px;
+    padding-left: 5px;
+    margin: 5px 0;
+}
+
+label {
+    /*width: 150px;*/
+    width: 120px;
+    /*height: 30px;*/
+    height: 25px;
+    /*color: rgba(171, 171, 171, 1);*/
+    font-size: 16px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+select {
+    width: 50px;
+    height: 25px;
+    border: 1px solid rgba(171, 171, 171, 1);
+    border-radius: 5px;
+    /*color: rgba(171, 171, 171, 1);*/
+    font-size: 16px;
+    margin: 5px 0;
+    /*text-align: center;*/
+}
+
+button {
+    width: 127px;
+    height: 25px;
+    background-color: rgba(75, 130, 216, 1);
+    border: 0;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+input[type='checkbox'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid rgba(171, 171, 171, 1);
+    border-radius: 5px;
+    outline: 0;
+    position: relative;
+    margin: 3px 0;
+    cursor: pointer;
+}
+
+input[type='checkbox']::before {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+
+input[type='checkbox']::after {
+    content: '';
+    width: 15%;
+    height: 40%;
+    transform: rotate(45deg);
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    top: 20%;
+    left: 40%;
+    position: relative;
+    display: none;
+}
+
+input[type='checkbox']:checked {
+    background: rgba(75, 130, 216, 1);
+    border: none;
+}
+
+input[type='checkbox']:checked::after {
+    display: block;
+}
+
+.outerDiv {
+    /*width: 1560px;*/
+    width: 1170px;
+    /*height: 850px;*/
+    height: 637px;
+    background-color: rgba(240, 240, 240, 1);
+    color: black;
+}
+
+.mainBox {
+    /*width: 1020px;*/
+    width: 760px;
+    /*height: 850px;*/
+    height: 637px;
+    background-color: white;
+    border-radius: 10px;
+    /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+    float: left;
+    /*margin-right: 30px;*/
+    margin-right: 20px;
+}
+
+.back {
+    float: left;
+    cursor: pointer;
+}
+
+.main {
+    padding-top: 20px;
+    float: left;
+}
+
+.titleText {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.searchBox {
+    margin-top: 20px;
+    margin-right: 35px;
+    font-size: 16px;
+    font-weight: bold;
+    float: right;
+}
+
+.line {
+    clear: left;
+    /*align-content: center;*/
+    border: 0;
+    height: 1px;
+    background-color: rgba(217, 217, 217, 1);
+    margin-left: 30px;
+}
+
+.userInfoBox {
+    /*width: 1020px;*/
+    width: 760px;
+    /*height: 300px;*/
+    height: 245px;
+    padding-top: 40px;
+}
+
+.previewBox {
+    /*width: 200px;*/
+    width: 130px;
+    text-align: center;
+    /*margin-left: 100px;*/
+    padding-top: 20px;
+    margin: 0 30px;
+    float: left;
+}
+
+.previewBox img {
+    /*width: 150px;*/
+    width: 100px;
+    /*height: 150px;*/
+    height: 100px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+}
+
+.fileBox label {
+    /*padding: 9px 27px;*/
+    padding: 3.76px 30.48px;
+    background-color: rgba(75, 130, 216, 1);
+    border: 0;
+    /*border-radius: 10px;*/
+    border-radius: 5px;
+    color: white;
+    /*font-size: 24px;*/
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fileBox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.spanTagBoxWSup {
+    line-height: 28px;
+    margin-right: 20px;
+    font-weight: bold;
+    float: left;
+}
+
+.highlightSpan {
+    vertical-align: super;
+    color: red;
+}
+
+.spanTagBoxWOSup {
+    line-height: 35px;
+    margin-right: 20px;
+    font-weight: bold;
+    float: left;
+}
+
+.pwdCheckFalse {
+    background-color: red;
+    font-weight: bold;
+}
+
+.pwdCheckTrue {
+    background-color: lightseagreen;
+    font-weight: bold;
+}
+
+.hiddenInputBox {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.detailBox {
+    width: 1020px;
+    /*font-size: 16px;*/
+    /*font-weight: bold;*/
+}
+
+.submitButton {
+    height: 50px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.sideBox {
+    /*width: 480px;*/
+    width: 360px;
+    /*height: 850px;*/
+    height: 637px;
+    background-color: white;
+    border-radius: 10px;
+    /*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+    float: left;
+}
+
+.agreement {
+    width: 300px;
+    height: 410px;
+    border: 1px solid rgba(171, 171, 171, 1);
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 40px;
+    padding: 5px 10px;
+    overflow-y: scroll;
+}
+
+.agreement span {
+    font-size: 14px;
+}
+
+.agreement::-webkit-scrollbar {
+    width: 10px;
+}
+
+.agreement::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: rgba(75, 130, 216, 1);
+    border-radius: 10px;
+}
+
+.agreement::-webkit-scrollbar-track {
+    background: rgba(205, 205, 205, 0.25);
+    border-radius: 10px;
+}
+
+.sideEmpList {
+    width: 300px;
+    margin: auto;
+}
+
+.sideList {
+    width: 300px;
+    height: 450px;
+    margin-top: 40px;
+    overflow-y: auto;
+}
+
+.sideList::-webkit-scrollbar {
+    width: 10px;
+}
+
+.sideList::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: rgba(75, 130, 216, 1);
+    border-radius: 10px;
+}
+
+.sideList::-webkit-scrollbar-track {
+    background: rgba(205, 205, 205, 0.25);
+    border-radius: 10px;
+}
+
+.sideEmpBlock {
+    /*width: 400px;*/
+    width: 290px;
+    /*height: 70px;*/
+    height: 50px;
+    float: left;
+    /*margin-left: 55px;*/
+    /*margin-right: 55px;*/
+    /*margin-top: 15px;*/
+    /*margin-bottom: 15px;*/
+    margin: 10px 0;
+}
+
+.empBlockLeft {
+    /*width: 70px;*/
+    width: 50px;
+    /*height: 70px;*/
+    height: 50px;
+    float: left;
+}
+
+.empImg {
+    /*width: 70px;*/
+    width: 50px;
+    /*height: 70px;*/
+    height: 50px;
+    /*border-radius: 70px;*/
+    border-radius: 50px;
+}
+
+.empBlockRight {
+    /*width: 330px;*/
+    width: 240px;
+    /*height: 60px;*/
+    height: 50px;
+    float: left;
+    /*padding-top: 10px;*/
+    padding-top: 4px;
+}
+
+.empName {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.empRole {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 10px;
+    color: rgba(171, 171, 171, 1);
+}
+
+.searchList {
+    width: 700px;
+    height: 440px;
+    border: 1px solid rgba(171, 171, 171, 1);
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 10px;
+    overflow-y: auto;
+}
+
+.searchList::-webkit-scrollbar {
+    width: 10px;
+}
+
+.searchList::-webkit-scrollbar-thumb {
+    height: 30%;
+    background: rgba(75, 130, 216, 1);
+    border-radius: 10px;
+}
+
+.searchList::-webkit-scrollbar-track {
+    background: rgba(205, 205, 205, 0.25);
+    border-radius: 10px;
+}
+
+.searchedEmp img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}

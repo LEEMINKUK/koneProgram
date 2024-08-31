@@ -1,0 +1,202 @@
+
+ /*.query-options {*/
+ /*    display: flex;*/
+ /*    gap: 10px; !* 버튼 사이 간격을 10px로 설정 *!*/
+ /*    float: right;*/
+ /*    margin-right: 15px;*/
+ /*    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);*/
+ /*    margin-top: -10px;*/
+ /*    margin-bottom: 5px;*/
+
+ /*}*/
+
+/*.expired a{*/
+/*    background-color: #f9f9f9;*/
+/*        color: black;*/
+/*        text-decoration: none;*/
+/*        display: block;*/
+
+/*}*/
+
+/*.inUse a{*/
+/*    background-color: #f9f9f9;*/
+/*    color: black;*/
+/*    text-decoration: none;*/
+/*    display: block;*/
+/*}*/
+
+/*.available a{*/
+/*    background-color: #f9f9f9;*/
+/*    color: black;*/
+/*    text-decoration: none;*/
+/*    display: block;*/
+/*}*/
+
+/*.personal a{*/
+/*    background-color: #f9f9f9;*/
+/*    color: black;*/
+/*    text-decoration: none;*/
+/*    display: block;*/
+/*}*/
+
+/*.all a{*/
+/*    background-color: #f9f9f9;*/
+/*    color: black;*/
+/*    text-decoration: none;*/
+/*    display: block;*/
+/*}*/
+
+
+
+ .btn-custom {
+     background-color: white;
+     color: black;
+     border: 1px solid #4B82D8;
+ }
+
+.modal-title {
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+
+}
+
+ .modal-body {
+     text-align: center; /* 텍스트를 가운데 정렬 */
+ }
+
+ .modal-footer {
+     text-align: center;
+ }
+
+ .modal-footer .btn {
+     margin: 0 30px;
+
+ }
+
+
+ .modal-body label{
+    font-weight: bold;
+}
+ .modal-body input {
+     width: 120px;
+     height: 25px;
+     border: 1px solid white;
+     stroke: #4B82D8;
+ }
+
+ /*#facStart,*/
+ /*#facEnd {*/
+ /*    border: 1px solid black;*/
+ /*    stroke: #4B82D8;*/
+ /*}*/
+ .modal-body select {
+     width: 120px;
+     height: 25px;
+     border: 1px solid white;
+     stroke: #4B82D8;
+ }
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+    margin: auto;
+}
+
+.facList {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* 8 columns with equal width */
+    width: 1147px;
+    min-height: 610px;
+    background-color: #F0F0F0;
+    gap: 20px;
+
+}
+
+.fac-item {
+    width: 120px; /* Adjust as needed */
+    height: 111px; /* Adjust as needed */
+    background-color: #8DD0F6;
+    border-radius: 20px;
+    stroke: #4B82D8;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+}
+
+
+.facCodeLink {
+    font-size: 18px;
+    margin-left: 10px;
+    color: black;
+    font-weight: bold;
+}
+
+.facStatus {
+    font-size: 18px;
+    position: relative;
+    top: -20px;
+    right: -65px;
+    color: black;
+    font-weight: bold;
+
+
+}
+
+
+.userCode{
+    font-size: 13px;
+    font-weight: normal; /* 기본 폰트 굵기 */
+    /*text-align: center;*/
+    /*text-indent: -40px;*/
+    text-indent: 5px;
+    margin-bottom: 15px;
+    margin-top: -15px;
+    color: black;
+    top: 20px;
+
+
+
+}
+
+.facStart,
+.facEnd {
+    font-size: 13px;
+    font-weight: normal;
+    text-indent: 5px;
+    margin-bottom: 15px;
+    margin-top: -15px;
+    color: black;
+
+
+
+}
+
+.modal-title {
+    color: black;
+}
+
+label{
+    color: black;
+}
+
+ body {
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background-color: #e2e1dc;
+ }
+
+ * {
+     margin:0;
+     padding:0;
+     box-sizing: border-box;
+     font-family: 'Noto Sans KR', sans-serif;
+ }

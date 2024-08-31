@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.willingtogohome.gymga.sale.model.dao.SaleMapper">
+
+    <resultMap id="salesMap" type="com.willingtogohome.gymga.sale.model.dto.SaleDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="salesMethod" column="sales_method"/>
+        <result property="salesDate" column="sales_date"/>
+        <result property="passNo" column="pass_no"/>
+    </resultMap>
+
+    <resultMap id="passMonthResultMap" type="com.willingtogohome.gymga.pass.model.dto.PassMonthDTO">
+        <id property="month" column="month"/>
+        <result property="total" column="total"/>
+    </resultMap>
+
+
+    <resultMap id="passResultMap" type="com.willingtogohome.gymga.pass.model.dto.PassAndPassQualDTO">
+        <id property="passCode" column="pass_code"/>
+        <result property="pqCode" column="pq_code"/>
+        <result property="passStatus" column="pass_status"/>
+        <result property="passStart" column="pass_start"/>
+        <result property="passEnd" column="pass_end"/>
+        <result property="passTotal" column="pass_total"/>
+        <result property="passUse" column="pass_use"/>
+        <result property="userCode" column="user_code"/>
+    <association property="passQualDTO" javaType="com.willingtogohome.gymga.pass.model.dto.PassQualDTO">
+        <id property="pqCode" column="pq_code"/>
+        <result property="pqName" column="pq_name"/>
+        <result property="pqPrice" column="pq_price"/>
+    </association>
+    <association property="userDTO" javaType="com.willingtogohome.gymga.user.model.dto.UserDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="userPwd" column="user_pwd"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPhone" column="user_phone"/>
+        <result property="userRole" column="user_role"/>
+        <result property="userPic" column="user_pic"/>
+        <result property="userGender" column="user_gender"/>
+        <result property="userBirth" column="user_birth"/>
+        <result property="userAddress" column="user_address"/>
+        <result property="userEtc" column="user_etc"/>
+        <result property="userStaff" column="user_staff"/>
+    </association>
+    <association property="validateDTO" javaType="com.willingtogohome.gymga.sale.model.dto.ValidateDTO">
+        <id property="valStatus" column="val_status"/>
+        <result property="passCode" column="pass_code"/>
+        <result property="userCode" column="user_code"/>
+    </association>
+    <association property="saleDTO" javaType="com.willingtogohome.gymga.sale.model.dto.SaleDTO">
+        <id property="userCode" column="user_code"/>
+        <result property="salesMethod" column="sales_method"/>
+        <result property="salesDate" column="sales_date"/>
+        <result property="passNo" column="pass_no"/>
+    </association>
+        <association property="empDTO" javaType="com.willingtogohome.gymga.user.model.dto.EmpDTO">
+            <id property="empCode" column="emp_code"/>
+            <result property="empName" column="emp_name"/>
+        </association>
+    </resultMap>
+
+<resultMap id="empAndUserResultMap" type="com.willingtogohome.gymga.sale.model.dto.EmployeeAndUserDTO">
+        <id property="total1" column="total1"/>
+        <association property="userDTO" javaType="com.willingtogohome.gymga.user.model.dto.UserDTO">
+            <id property="userCode" column="user_code"/>
+            <result property="userId" column="user_id"/>
+            <result property="userPwd" column="user_pwd"/>
+            <result property="userName" column="user_name"/>
+            <result property="userPhone" column="user_phone"/>
+            <result property="userRole" column="user_role"/>
+            <result property="userPic" column="user_pic"/>
+            <result property="userGender" column="user_gender"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userAddress" column="user_address"/>
+            <result property="userEtc" column="user_etc"/>
+            <result property="userStaff" column="user_staff"/>
+        </association>
+        <association property="employeeDTO" javaType="com.willingtogohome.gymga.emp.model.dto.EmployeeDTO">
+            <id property="code" column="USER_CODE"/>
+            <result property="location" column="EMP_LOCATION"/>
+            <result property="year" column="EMP_YEAR"/>
+            <result property="month" column="EMP_MONTH"/>
+            <result property="totalYear" column="EMP_TOT_YEAR"/>
+            <result property="totalMonth" column="EMP_TOT_MONTH"/>
+            <result property="qual" column="EMP_QUAL"/>
+            <result property="salary" column="EMP_SALARY"/>
+        </association>
+        <association property="passQualDTO" javaType="com.willingtogohome.gymga.pass.model.dto.PassQualDTO">
+            <id property="pqCode" column="pq_code"/>
+            <result property="pqName" column="pq_name"/>
+            <result property="pqPrice" column="pq_price"/>
+        </association>
+        <association property="passDTO" javaType="com.willingtogohome.gymga.pass.model.dto.PassDTO">
+            <id property="passCode" column="pass_code"/>
+            <result property="pqCode" column="pq_code"/>
+            <result property="passStatus" column="pass_status"/>
+            <result property="passStart" column="pass_start"/>
+            <result property="passEnd" column="pass_end"/>
+            <result property="passTotal" column="pass_total"/>
+            <result property="passUse" column="pass_use"/>
+            <result property="userCode" column="user_code"/>
+        </association>
+</resultMap>
+
+
+
+    <select id="findAllList" resultMap="passResultMap">
+        SELECT
+        A.USER_CODE,
+        A.USER_NAME,
+        A.USER_ID,
+        A.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method
+        FROM USERDB A
+        LEFT JOIN validatedb E ON E.user_code = A.user_code
+        LEFT JOIN passdb C ON C.pass_code = E.pass_code
+        LEFT JOIN salesdb D ON D.pass_no = E.pass_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        WHERE A.user_role = 'MEMBER' and C.pass_start is not null
+        order by C.pass_start desc , D.sales_date desc;
+    </select>
+
+    <select id="findPassAndPassQualList" resultMap="passResultMap">
+        SELECT
+        A.USER_CODE,
+        A.USER_NAME,
+        A.USER_ID,
+        A.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method,
+        A.user_etc
+        FROM USERDB A
+        LEFT JOIN validatedb E ON E.user_code = A.user_code
+        LEFT JOIN passdb C ON C.pass_code = E.pass_code
+        LEFT JOIN salesdb D ON D.pass_no = E.pass_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        where A.user_role = 'MEMBER' and C.pass_start is not null
+        order by C.pass_start desc , D.sales_date desc;
+    </select>
+
+    <select id="getData" resultMap="passResultMap">
+        SELECT
+        SUM(CASE WHEN pq_code LIKE 'PT%' THEN 1 ELSE 0 END) as ptCount,
+        SUM(CASE WHEN pq_code LIKE 'GX%' THEN 1 ELSE 0 END) as gxCount,
+        SUM(CASE WHEN pq_code LIKE 'GP%' THEN 1 ELSE 0 END) as gpCount
+        FROM PASSDB
+        <where>
+            <if test="condition == 'string'">
+                AND A.USER_NAME Like CONCAT('%', #{ text }, '%')
+            </if>
+            <if test="condition == 'quarter1'">
+            and QUARTER(pass_start) = 1;
+            </if>
+            <if test="condition == 'quarter2'">
+            and QUARTER(pass_start) = 2;
+            </if>
+            <if test="condition == 'quarter3'">
+            and QUARTER(pass_start) = 3;
+            </if>
+            <if test="condition == 'quarter4'">
+            and QUARTER(pass_start) = 4;
+            </if>
+        </where>
+    </select>
+
+
+    <select id="empAndUser" resultMap="empAndUserResultMap">
+        SELECT
+        A.user_pic,
+        A.user_name,
+        A.user_role,
+        SUM(CASE WHEN A.user_role = 'ADMIN' or A.user_role = 'USER' THEN D.pq_price ELSE 0 END) AS total1
+        from userdb A
+        join employeedb B on A.user_code=B.user_code
+        left join passdb C on C.user_code=B.user_code
+        left join passqualdb D on C.pq_code=D.pq_code
+        GROUP BY A.user_code
+        order by A.user_name;
+    </select>
+
+    <select id="getPassDataForPieChart" resultMap="passMonthResultMap">
+        SELECT
+                month.month,
+                COALESCE(SUM(B.pq_price), 0) AS total
+            FROM (
+                SELECT '01' AS month
+                UNION SELECT '02'
+                UNION SELECT '03'
+                UNION SELECT '04'
+                UNION SELECT '05'
+                UNION SELECT '06'
+                UNION SELECT '07'
+                UNION SELECT '08'
+                UNION SELECT '09'
+                UNION SELECT '10'
+                UNION SELECT '11'
+                UNION SELECT '12'
+                ) AS month
+        LEFT JOIN passdb A ON SUBSTRING(A.pass_start, 6, 2) = month.month
+        LEFT JOIN passqualdb B ON A.pq_code = B.pq_code
+        GROUP BY month.month
+        ORDER BY month.month;
+    </select>
+
+
+    <select id="searchedUser" resultMap="passResultMap">
+        SELECT
+        A.USER_CODE,
+        A.USER_NAME,
+        A.USER_ID,
+        A.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method,
+        A.user_etc
+        FROM USERDB A
+        LEFT JOIN validatedb E ON E.user_code = A.user_code
+        LEFT JOIN passdb C ON C.pass_code = E.pass_code
+        LEFT JOIN salesdb D ON D.pass_no = E.pass_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        <where>
+            <if test="condition == 'name'">
+                AND A.USER_NAME Like CONCAT('%', #{ text }, '%')
+            </if>
+            <if test="condition == 'id'">
+                AND A.USER_ID Like CONCAT('%', #{ text }, '%')
+            </if>
+            <if test="condition == 'month'">
+                AND DATE_FORMAT(C.pass_start, '%m') = LPAD(#{text}, 2, '0')
+            </if>
+            <if test="condition == 'string'">
+                AND A.USER_NAME Like CONCAT('%', #{ text }, '%')
+            </if>
+            <if test="condition == 'quarter1'">
+                AND QUARTER(C.pass_start) = 1
+            </if>
+            <if test="condition == 'quarter2'">
+                AND QUARTER(C.pass_start) = 2
+            </if>
+            <if test="condition == 'quarter3'">
+                AND QUARTER(C.pass_start) = 3
+            </if>
+            <if test="condition == 'quarter4'">
+                AND QUARTER(C.pass_start) = 4
+            </if>
+            AND A.USER_ROLE = 'MEMBER' and C.pass_start is not null
+        </where>
+        order by C.pass_start desc , D.sales_date desc;
+    </select>
+
+    <select id="searchedUserTest" resultMap="passResultMap">
+        SELECT
+        F.user_code,
+        E.USER_CODE as emp_code,
+        F.USER_NAME,
+        F.USER_ID,
+        F.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method,
+        E.user_etc,
+        E.user_name as emp_name
+        FROM validatedb A
+        LEFT JOIN passdb C ON C.pass_code = A.pass_code
+        LEFT JOIN userdb E ON E.user_code = C.user_code
+        LEFT JOIN salesdb D ON D.pass_no = A.pass_code
+        left join userdb F on F.user_code = D.user_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        <where>
+            <if test="condition == 'name'">
+                AND F.USER_NAME Like CONCAT('%', #{ text }, '%') and C.pass_start is not null
+            </if>
+        </where>
+        order by F.user_code
+    </select>
+
+    <select id="getUserDetails" resultMap="passResultMap">
+        SELECT
+        F.user_code,
+        E.USER_CODE as emp_code,
+        F.USER_NAME,
+        F.USER_ID,
+        E.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method,
+        E.user_etc,
+        E.user_name as emp_name
+        FROM validatedb A
+        LEFT JOIN passdb C ON C.pass_code = A.pass_code
+        LEFT JOIN userdb E ON E.user_code = C.user_code
+        LEFT JOIN salesdb D ON D.pass_no = A.pass_code
+        left join userdb F on F.user_code = D.user_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        order by C.pass_start desc , D.sales_date desc;
+    </select>
+
+    <select id="findByUserId" resultMap="passResultMap">
+        SELECT
+        F.user_code,
+        E.USER_CODE as emp_code,
+        F.USER_NAME,
+        F.USER_ID,
+        F.user_pic,
+        B.pq_code,
+        B.pq_name,
+        C.pass_start,
+        C.pass_end,
+        B.pq_price,
+        D.pass_no,
+        D.sales_date,
+        D.sales_method,
+        E.user_etc,
+        E.user_name as emp_name
+        FROM validatedb A
+        LEFT JOIN passdb C ON C.pass_code = A.pass_code
+        LEFT JOIN userdb E ON E.user_code = C.user_code
+        LEFT JOIN salesdb D ON D.pass_no = A.pass_code
+        left join userdb F on F.user_code = D.user_code
+        LEFT JOIN passqualdb B ON C.pq_code = B.pq_code
+        where F.user_id = #{userId}
+        order by C.pass_start desc;
+    </select>
+
+    <select id="searchByUserId" resultMap="passResultMap">
+        select
+        user_pic,
+        user_id,
+        user_name,
+        user_etc
+        from userdb
+        where user_id = #{userId}
+    </select>
+
+
+
+<!--    <update id="updatePassData" parameterMap="passDataResultMap">-->
+<!--        UPDATE passdata-->
+<!--        SET (PT_Count,-->
+<!--        GX_Count,-->
+<!--        GP_Count)-->
+<!--        SELECT-->
+<!--        SUM(CASE WHEN pq_code LIKE 'PT%' THEN 1 ELSE 0 END),-->
+<!--        SUM(CASE WHEN pq_code LIKE 'GX%' THEN 1 ELSE 0 END),-->
+<!--        SUM(CASE WHEN pq_code LIKE 'GP%' THEN 1 ELSE 0 END)-->
+<!--        FROM passdb;-->
+<!--    </update>-->
+
+</mapper>

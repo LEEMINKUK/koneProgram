@@ -1,0 +1,33 @@
+<div class="header-container">
+    <div onclick="location.href='/main'" class="logo">
+        <p class="gym">(주)케이원</p>
+        <div class="home">상담사용</div>
+    </div>
+    <img class="profile" src="/uploadFiles/default-user.png" style="border-radius: 100%"/>
+    <div class="welcome">
+        <p >환영합니다, </p>
+
+        <span id="name"></span>
+
+        <p>님!</p>
+    </div>
+    <img class="icon1" src="/images/Alarm.png">
+    <img class="icon2" src="/images/Gear.png">
+    <form id="form-logout" method="post" action="/main/logout">
+        <img class="icon2" src="/images/Logout.png" onclick="document.getElementById('form-logout').submit();" style="cursor: pointer">
+    </form>
+</div>
+
+<script>
+    const pic = document.getElementById("pic");
+    const name = document.getElementById("name");
+
+    fetch("/main/info")
+        .then(res => res.json())
+        .then(data => {
+            if (data != null) {
+                pic.src = '/imageFile/' + data.userPic;
+                name.innerHTML = data.userName;
+            }
+        })
+</script>
