@@ -38,11 +38,11 @@
     <!--                    </div>-->
                         <div class="salesInfoDiv">
                             <div class="salesInfoBox" style="margin: 0 20px 17px 0">
-                                <span class="topic">이용권 현황</span>
+                                <span class="topic">배정 현황</span>
                                 <div class="graph" id="pie"></div>
                             </div>
                             <div class="salesInfoBox" style="margin-bottom: 17px">
-                                <span class="topic">매출 현황</span>
+                                <span class="topic">신규 가입 현황</span>
                                 <div class="graph" id="bar"></div>
                             </div>
                             <div class="salesInfoBox" style="width: 760px; height: 290px">
@@ -370,11 +370,11 @@
                         legend: {
                             bottom: '15%',
                             left: 'center',
-                            fontSize: 16,
+                            fontSize: 24,
                         },
                         series: [
                             {
-                                name: '이용권 종류',
+                                name: '근무 일자',
                                 type: 'pie',
                                 radius: ['30%', '60%'],
                                 center: ['50%', '40%'],
@@ -388,6 +388,7 @@
                                 label: {
                                     show: true,
                                     position: 'middle',
+                                    fontSize: 20,
                                     formatter: function(params) {
                                         var dataName = params.data.name;
                                         var dataValue = params.data.value;
@@ -400,19 +401,19 @@
                                             return '';
                                         }
 
-                                        if (dataName === 'PT') {
-                                            return percent + '%';
-                                        } else if (dataName === 'GX') {
-                                            return  percent + '%';
-                                        } else if (dataName === '일반') {
-                                            return percent + '%';
+                                        if (dataName === '6일') {
+                                            return (data.pt + `명`);
+                                        } else if (dataName === '10일') {
+                                            return  (data.gx + `명`);
+                                        } else if (dataName === '24일') {
+                                            return (data.gp + `명`);
                                         }
                                     }
                                 },
                                 emphasis: {
                                     label: {
                                         show: true,
-                                        fontSize: 16,
+                                        fontSize: 24,
                                         fontWeight: 'bold'
                                     }
                                 },
@@ -420,9 +421,9 @@
                                     show: true,
                                 },
                                 data: [
-                                    { value: data.pt, name: 'PT' },
-                                    { value: data.gx, name: 'GX' },
-                                    { value: data.gp, name: '일반' }
+                                    { value: data.pt, name: '6일' },
+                                    { value: data.gx, name: '10일' },
+                                    { value: data.gp, name: '24일' }
                                 ]
                             }
                         ]
